@@ -23,18 +23,25 @@ class Post(models.Model):
         unique = slug
         number = 1
 
-        while Post.objects.filter(slug = unique).exists():
-            unique = '{}-{}'.format(slug, number)
+        while Post.objects.filter(slug = unique).exists():   # baslıkları aynı olan postların sluglarını unique olarak
+            unique = '{}-{}'.format(slug, number)            # oluşturmak için
             number += 1
 
         return unique
 
+
     def __str__(self):
         return self.title
+
 
     def save(self, *args, **kwargs):
         if not self.id:
             self.created = timezone.now()
-        self.modified = timezone.now()
-        self.slug = self.get_slug()
+            self.modified = timezone.now()
+            self.slug = self.get_slug()
         return super(Post, self).save(*args,**kwargs)
+
+
+
+
+        
