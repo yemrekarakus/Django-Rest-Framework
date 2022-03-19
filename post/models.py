@@ -12,7 +12,7 @@ class Post(models.Model):
     created = models.DateTimeField(editable=False)
     modified = models.DateTimeField()
     slug = models.SlugField(unique=True, max_length=150, editable=False)
-    image = models.ImageField(upload_to='post/images', null=True, blank=True)
+    image = models.ImageField(upload_to='post', null=True, blank=True)
     modified_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='modified_by')
 
     class Meta:

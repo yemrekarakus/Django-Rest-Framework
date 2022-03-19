@@ -8,10 +8,12 @@ class PostSerializer(serializers.ModelSerializer):
         view_name = 'post:detail',
         lookup_field = 'slug',
     )
+    username = serializers.SerializerMethodField()   #Username'i almak için method 
+    # username = serializers.SerializerMethodField(method_name='username_new')   #Username'i almak için method alernatif
     class Meta:
         model = Post
         fields = [
-            'user',
+            'username',
             'title',
             'content',
             'image',
@@ -21,7 +23,15 @@ class PostSerializer(serializers.ModelSerializer):
             
         ]
 
+    def get_username(self,obj):  #Username'i almak için method tanımlandı
+        return str(obj.user.username)
+
+    # def username_new(self,obj):  #Username'i almak için method tanımlandı | Alternatif
+    #     return str(obj.user.username)
     
+
+
+
 class PostUpdateCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
