@@ -1,3 +1,4 @@
+from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.generics import (
     ListAPIView, RetrieveAPIView,
     DestroyAPIView,
@@ -14,9 +15,13 @@ from rest_framework.permissions import (
 
 
 class PostListAPIView(ListAPIView):
-    queryset = Post.objects.all() 
     serializer_class = PostSerializer
+    filter_backends = [SearchFilter, OrderingFilter]
+    search_fields = ['title','content']
 
+    def get_queryset(self):       #Filtreleme                        
+        query_set = Post.objects.filter(draft=False)
+        return query_set 
 
 class PostDetailAPIView(RetrieveAPIView):
     queryset = Post.objects.all()
@@ -40,8 +45,6 @@ class PostUpdateAPIView(RetrieveUpdateAPIView):
         serializer.save(modified_by = self.request.user)  # düzenleme yapan userı göstermek için
 
 
-
-    
 class PostCreateAPIView(CreateAPIView):
     queryset = Post.objects.all()
     serializer_class = PostUpdateCreateSerializer
