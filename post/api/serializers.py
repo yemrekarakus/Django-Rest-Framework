@@ -1,8 +1,13 @@
+from cgitb import lookup
 from rest_framework import serializers
 from post.models import Post
 
 
 class PostSerializer(serializers.ModelSerializer):
+    url = serializers.HyperlinkedIdentityField(
+        view_name = 'post:detail',
+        lookup_field = 'slug',
+    )
     class Meta:
         model = Post
         fields = [
@@ -10,7 +15,7 @@ class PostSerializer(serializers.ModelSerializer):
             'title',
             'content',
             'image',
-            'slug',
+            'url',
             'created',
             'modified_by'
             
@@ -29,17 +34,21 @@ class PostUpdateCreateSerializer(serializers.ModelSerializer):
         ]
 
 
-    def create(self, validated_data):
-        print("başarılı")
-        return Post.objects.create(**validated_data)
 
 
-    def update(self, instance, validated_data):
-        instance.title = validated_data.get('title', instance.title)
-        instance.content = 'değiştirildi'
-        instance.image = "ornek resim.url"
-        instance.save()
-        return instance
+
+
+    # def create(self, validated_data):
+    #     print("başarılı")
+    #     return Post.objects.create(**validated_data)
+
+
+    # def update(self, instance, validated_data):
+    #     instance.title = validated_data.get('title', instance.title)
+    #     instance.content = 'değiştirildi'
+    #     instance.image = "ornek resim.url"
+    #     instance.save()
+    #     return instance
 
 
     # def validate_title(self,value):
