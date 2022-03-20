@@ -1,6 +1,16 @@
 from cgitb import lookup
-from rest_framework.generics import CreateAPIView, ListAPIView, DestroyAPIView, UpdateAPIView
-from comment.api.serializers import CommentCreateSerializer, CommentListSerializer, CommentDeleteUpdateSerialier
+from rest_framework.generics import (
+                                    CreateAPIView,
+                                    ListAPIView,
+                                    DestroyAPIView,
+                                    UpdateAPIView,
+                                    RetrieveAPIView,
+                                    )   
+from comment.api.serializers import (
+                                    CommentCreateSerializer,
+                                    CommentListSerializer,
+                                    CommentDeleteUpdateSerialier,
+                                    )
 from comment.models import Comment
 from rest_framework.permissions import IsAuthenticated
 from comment.api.permissions import IsOwner
@@ -26,7 +36,7 @@ class CommentDeleteAPIView(DestroyAPIView):
     permission_class = [IsOwner]
 
 
-class CommentUpdateAPIView(UpdateAPIView):
+class CommentUpdateAPIView(UpdateAPIView, RetrieveAPIView):
     queryset = Comment.objects.all()
     serializer_class = CommentDeleteUpdateSerialier
     lookup_field = 'pk'
