@@ -35,6 +35,6 @@ class Comment(models.Model):
         return Comment.objects.filter(parent = self)
 
     
-    @property
-    def any_children(self):
+    @property                       
+    def any_children(self):          #Parent-Children yönetimi için
         return Comment.objects.filter(parent = self ).exists()
