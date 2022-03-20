@@ -1,7 +1,14 @@
-from rest_framework.generics import CreateAPIView
-from comment.api.serializers import CommentCreateSerializer
+from rest_framework.generics import CreateAPIView, ListAPIView
+from comment.api.serializers import CommentCreateSerializer, CommentListSerializer
 from comment.models import Comment
 from rest_framework.permissions import IsAuthenticated
+
+
+class CommentListAPIView(ListAPIView):
+    queryset = Comment.objects.all()
+    serializer_class = CommentListSerializer 
+    
+
 
 
 class CommentCreateAPIView(CreateAPIView):

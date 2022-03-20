@@ -13,3 +13,10 @@ class CommentCreateSerializer(ModelSerializer):
             if attrs["parent"].post != attrs["post"]:
                 raise serializers.ValidationError("Something went wrong")
         return attrs
+
+
+class CommentListSerializer(ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = '__all__'
+
