@@ -22,9 +22,11 @@ class PostListAPIView(ListAPIView):
     search_fields = ['title','content']
     pagination_class = PostPagination
 
+
     def get_queryset(self):       #Filtreleme                        
         query_set = Post.objects.filter(draft=False)
         return query_set 
+
 
 class PostDetailAPIView(RetrieveAPIView):
     queryset = Post.objects.all()
@@ -44,6 +46,7 @@ class PostUpdateAPIView(RetrieveUpdateAPIView):
     lookup_field = 'slug'
     permission_classes = [IsOwner]
 
+
     def perform_update(self, serializer):
         serializer.save(modified_by = self.request.user)  # düzenleme yapan userı göstermek için
 
@@ -52,6 +55,7 @@ class PostCreateAPIView(CreateAPIView):
     queryset = Post.objects.all()
     serializer_class = PostUpdateCreateSerializer
     permission_classes = [IsAuthenticated]  # Yetkili olmayan kullanıcıların girememesi için
+
 
     def perform_create(self, serializer):
         serializer.save(user = self.request.user)

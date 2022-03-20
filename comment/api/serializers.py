@@ -31,3 +31,9 @@ class CommentListSerializer(ModelSerializer):
             return CommentListSerializer(obj.children(), many=True).data
 
 
+class CommentDeleteUpdateSerialier(ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = [
+            'content'
+            ]
