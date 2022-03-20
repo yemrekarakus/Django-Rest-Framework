@@ -1,10 +1,9 @@
 from cgitb import lookup
 from urllib import request
-from rest_framework.mixins import UpdateModelMixin, RetrieveModelMixin
+from rest_framework.mixins import DestroyModelMixin
 from rest_framework.generics import (
                                     CreateAPIView,
-                                    ListAPIView,
-                                    DestroyAPIView,
+                                    ListAPIView,                                    
                                     UpdateAPIView,
                                     RetrieveAPIView,
                                     )   
@@ -31,27 +30,27 @@ class CommentListAPIView(ListAPIView):
         return queryset
 
 
-#class CommentDeleteAPIView(DestroyAPIView, UpdateModelMixin, RetrieveModelMixin):  #ModelMixin Alternatif
-class CommentDeleteAPIView(DestroyAPIView):
+# #class CommentDeleteAPIView(DestroyAPIView, UpdateModelMixin, RetrieveModelMixin):  #ModelMixin Alternatif
+#     queryset = Comment.objects.all()
+#     serializer_class = CommentDeleteUpdateSerialier
+#     lookup_field = 'pk'
+#     permission_class = [IsOwner]
 
+#     # def put(self, request, *args, **kwargs):
+#     #     return self.update(request, *args, **kwargs)
+#                                                                     #ModelMixin Alternatif
+#     # def get(self, request, *args, **kwargs):
+#     #     return self.retrieve(request, *args, **kwargs)
+
+
+class CommentUpdateAPIView(UpdateAPIView, RetrieveAPIView, DestroyModelMixin):
     queryset = Comment.objects.all()
     serializer_class = CommentDeleteUpdateSerialier
     lookup_field = 'pk'
     permission_class = [IsOwner]
 
-    # def put(self, request, *args, **kwargs):
-    #     return self.update(request, *args, **kwargs)
-                                                                    #ModelMixin Alternatif
-    # def get(self, request, *args, **kwargs):
-    #     return self.retrieve(request, *args, **kwargs)
-
-
-class CommentUpdateAPIView(UpdateAPIView, RetrieveAPIView):
-    queryset = Comment.objects.all()
-    serializer_class = CommentDeleteUpdateSerialier
-    lookup_field = 'pk'
-    permission_class = [IsOwner]
-
+    def delete(self, request, *args, **kwargs):
+        return self.destroy(request, *args, **kwargs)
 
 class CommentCreateAPIView(CreateAPIView):
     queryset = Comment.objects.all()
