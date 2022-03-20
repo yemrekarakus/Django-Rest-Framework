@@ -4,11 +4,19 @@ from comment.api.serializers import CommentCreateSerializer, CommentListSerializ
 from comment.models import Comment
 from rest_framework.permissions import IsAuthenticated
 from comment.api.permissions import IsOwner
+from comment.api.pagination import CommentPagination
 
 
 class CommentListAPIView(ListAPIView):
-    queryset = Comment.objects.all()
     serializer_class = CommentListSerializer 
+    pagination_class = CommentPagination
+
+    def get_queryset(self):
+        queryset = Comment.objects.filter(parent = None)
+        query = self.request.GET.get("q")
+        if query:
+            queryset = queryset.filter(post = query)
+        return queryset
 
 
 class CommentDeleteAPIView(DestroyAPIView):
